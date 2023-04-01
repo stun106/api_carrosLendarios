@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
+// post cars
 const createCar = async (model,factory,descrition,picture) => {
     const car = await prisma.car.create({
         data: {
@@ -10,18 +11,33 @@ const createCar = async (model,factory,descrition,picture) => {
             picture,
         }
     })
-    return car
+    return car;
 }
 
-
+// get all
 const getAllCar = async () =>{
-    const cars = await prisma.car.findMany()
-    return cars
+    const cars = await prisma.car.findMany();
+    return cars;
 }
 
+// get for id - nessa função usei um metodo do prisma `findMany` onde existem parametro como:
+// `where`: que vai estabelecer um filtro para minha query; 
+// `model`: é a coluna da minha tabela onde os dados irão ser filtrados;
+// `contrains`: é a especificação ou tratamento de dados passado para entrada de dados. nesse caso usamos o `ilike`
+const getCarbyName = async (name) =>{
+    const dados = await prisma.car.findMany({ where: {model:{
+                                                        contains: name.trim().toLowerCase()
+                                                             }   
+                                                        } 
+                                                    });  
+    return dados;
+}
+
+//put for id
 
 
 module.exports = {
     createCar,
-    getAllCar
+    getAllCar,
+    getCarbyName
 }

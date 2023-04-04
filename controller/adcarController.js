@@ -49,9 +49,17 @@ const updateCarforId = async (id,model, factory, descrition, picture) => {
     return updatedCar
 }
 
+//delete for id
+const deleteCarforId = async (id) => {
+    CarDeleted = await prisma.car.delete({
+        where: {id: Number(id)}
+    })
+}
+
 module.exports = {
     createCar,
     getAllCar,
     getCarbyName,
-    updateCarforId
+    updateCarforId,
+    deleteCarforId
 }

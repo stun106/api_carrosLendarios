@@ -15,10 +15,9 @@ router.post("/joseadd", async (req, res) => {
 
 // rotas GET
 router.get("/allcars/:name?", async (req, res) => {
+    const car = req.params.name;
+    const dados = await carController.getAllCar()
     try {
-        const car = req.params.name;
-
-        const dados = await carController.getAllCar()
         if (car) {
             const carUnique = await carController.getCarbyName(car)
             res.status(201).json(carUnique)
@@ -32,6 +31,7 @@ router.get("/allcars/:name?", async (req, res) => {
         console.log(err)
         res.status(501).json({ err: 'Algo não esta certo, verifique seus dados.' })
     }
+
 });
 
 // rota PUT 
@@ -45,6 +45,20 @@ router.put("/josealtera/:id", async (req, res) => {
         console.log(err)
         res.status(500).json({ err: "erro ao atualizar o carro" });
     }
+})
+
+// rota DELETE
+router.delete("/josedeleta/:id", async (req,res) =>{
+    const id = Number(req.params.id);
+    try{
+        const carDeleted = await carController.deleteCarforId(id)
+        res.status(201).json({aviso:"carro deletado com sucesso!"})
+    }catch (err){
+        console.log(err)
+        res.status(500).json({ err: "erro ao deletar o carro" });
+    }
+
+    
 })
 
 module.exports = router
